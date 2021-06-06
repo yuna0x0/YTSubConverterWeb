@@ -60,6 +60,8 @@ app.post("/upload", uploadLimiter, (req, res) => {
     req.files.file.mv(`./tmp/${id}.${ext}`, () => {
         execSync(`mono ./bin/YTSubConverter.exe ./tmp/${id}.${ext}`);
         if (!fs.existsSync(`./tmp/${id}.ytt`)) {
+            if (fs.existsSync(`./tmp/${id}.${ext}`))
+                fs.rmSync(`./tmp/${id}.${ext}`);
             res.sendStatus(500);
             return;
         }
