@@ -15,7 +15,10 @@ const app = express();
 app.use(helmet());
 app.use(
     helmet.contentSecurityPolicy({
-        useDefaults: true
+        useDefaults: true,
+        directives: {
+            scriptSrc: ["'self'", "https:", "'unsafe-inline'"]
+        },
     })
 );
 app.use(compression());
@@ -47,7 +50,8 @@ app.post("/upload", uploadLimiter, (req, res) => {
         return res.sendStatus(400);
 
     let fileNameArr = req.files.file.name.split('.');
-    let ext = fileNameArr[fileNameArr.length - 1];
+    let ext = fileNameArr.pop();
+    let fileName = fileNameArr.join('.');
 
     if (!(ext == "ass"))
         return res.sendStatus(400);
@@ -66,7 +70,7 @@ app.post("/upload", uploadLimiter, (req, res) => {
             return;
         }
         res.status(201);
-        res.sendFile(`./tmp/${id}.ytt`, { root: './' }, () => {
+        res.download(`./tmp/${id}.ytt`, `${fileName}.ytt`, () => {
             if (fs.existsSync(`./tmp/${id}.${ext}`))
                 fs.rmSync(`./tmp/${id}.${ext}`);
             if (fs.existsSync(`./tmp/${id}.ytt`))

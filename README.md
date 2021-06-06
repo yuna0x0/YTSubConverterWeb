@@ -1,6 +1,6 @@
 # YTSubConverterWeb
 
-[YTSubConverter](https://github.com/arcusmaximus/YTSubConverter) Web Version.
+[YTSubConverter](https://github.com/arcusmaximus/YTSubConverter) (Web Version)
 ## Requirements
 
 ```
