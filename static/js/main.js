@@ -41,7 +41,7 @@ document.getElementById("generate").addEventListener("click", () => {
         Swal.fire({
             icon: 'error',
             title: 'Something went wrong',
-            text: 'Please try again.',
+            html: 'Please try again.<br><br>The file you uploaded might be corrupted or not yet supported by YTSubConverter.',
             footer: `${e}`
         });
     });
