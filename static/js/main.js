@@ -10,7 +10,7 @@ document.getElementById("generate").addEventListener("click", () => {
     if (!file) {
         Swal.fire({
             icon: 'error',
-            title: '請選擇要轉換的 ASS 檔案',
+            title: 'Please select the ASS file to be converted',
         });
         return;
     }
@@ -40,8 +40,8 @@ document.getElementById("generate").addEventListener("click", () => {
     }).catch((e) => {
         Swal.fire({
             icon: 'error',
-            title: '檔案產生發生錯誤',
-            text: '請稍後再試。',
+            title: 'Something went wrong',
+            text: 'Please try again.',
             footer: `${e}`
         });
     });
