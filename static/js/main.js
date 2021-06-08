@@ -5,12 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+let hasExtension = (inputId, exts) => {
+    var fileName = document.getElementById(inputId).files[0].name;
+    return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$', 'i')).test(fileName);
+};
+
 document.getElementById("generate").addEventListener("click", () => {
     let file = document.getElementById("input").files[0];
     if (!file) {
         Swal.fire({
             icon: 'error',
             title: 'Please select the ASS file to be converted',
+        });
+        return;
+    }
+    if (!hasExtension('input', ['.ass'])) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Please select the file with ASS format',
         });
         return;
     }
@@ -21,22 +33,19 @@ document.getElementById("generate").addEventListener("click", () => {
         body: fd
     }).then(res => {
         if (res.ok) {
-            let fileName = res.headers.get('Content-Disposition').split('filename=')[1];
-            if (fileName.charAt(0) === '"' && fileName.charAt(fileName.length - 1) === '"') {
-                fileName = fileName.substr(1, fileName.length - 2);
-            }
-            return { blob: res.blob(), fileName: fileName };
+            return res.blob();
         } else {
             throw new Error(res.statusText);
         }
-    }).then(res => {
-        res.blob.then((blob) => {
-            let fileUrl = URL.createObjectURL(blob);
-            let a = document.createElement('a');
-            a.href = fileUrl;
-            a.download = res.fileName;
-            a.click();
-        });
+    }).then(blob => {
+        let fileNameArr = document.getElementById('input').files[0].name.split('.');
+        fileNameArr.pop();
+        let fileName = fileNameArr.join('.') + ".ytt";
+        let fileUrl = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = fileName;
+        a.click();
     }).catch((e) => {
         Swal.fire({
             icon: 'error',

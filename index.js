@@ -50,7 +50,7 @@ app.post("/upload", uploadLimiter, (req, res) => {
         return res.sendStatus(400);
 
     let fileNameArr = req.files.file.name.split('.');
-    let ext = fileNameArr.pop();
+    let ext = fileNameArr.pop().toLowerCase();
     let fileName = fileNameArr.join('.');
 
     if (!(ext == "ass"))
